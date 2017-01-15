@@ -63,6 +63,12 @@ namespace alexmore.Fx.Domain.EntityFramework
         }
 
         #region IDataSource
+        public IDbContextTransaction BeginTransaction() => Context.Database.BeginTransaction();
+
+        public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken)) => Context.SaveChangesAsync(cancellationToken);
+        #endregion
+
+        #region ICommandQueryFactory
         private ICommandHandler<TCommand> GetComandHandler<TCommand>() where TCommand : ICommand
         {
             var handler = CommandHandlerResolver.Resolve<TCommand>(this);
@@ -118,6 +124,7 @@ namespace alexmore.Fx.Domain.EntityFramework
 
             return await validator.ValidateAsync(data).ConfigureAwait(false);
         }
+
         #endregion
 
         #region IQueryDataSource
@@ -125,12 +132,6 @@ namespace alexmore.Fx.Domain.EntityFramework
         #endregion
 
         #region ICommandHandlerDataSource
-        public IDbContextTransaction BeginTransaction() => Context.Database.BeginTransaction();
-
-        public int SaveChanges() => Context.SaveChanges();
-
-        public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken)) => Context.SaveChangesAsync(cancellationToken);
-
         public IEntitiesDataSource Entities { get { return entitiesDataSource; } }
         #endregion
 

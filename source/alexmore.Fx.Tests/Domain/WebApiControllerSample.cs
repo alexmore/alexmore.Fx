@@ -79,6 +79,7 @@ namespace alexmore.Fx.Tests.Domain
             // Если используется анемичная модель - то все делается в командах, иначе команды просто обертки над методами модели.
             // А еще команды можно использовать как Unit of Work.
             await dataSource.ExecuteAsync(new CompleteSchedule() { Id = id });
+            await dataSource.SaveChangesAsync();
 
             var completedS = await dataSource.Select<Schedule>().WithId(id).FirstOrDefaultAsync();
 
@@ -92,6 +93,7 @@ namespace alexmore.Fx.Tests.Domain
             var dt = new DateTime(1900, 1, 1);
 
             await dataSource.ExecuteAsync(new ExtendScheduleDate() { Id = id, NewDate = dt });
+            await dataSource.SaveChangesAsync();
 
             var completedS = await dataSource.Select<Schedule>().WithId(id).FirstOrDefaultAsync();
 
@@ -108,6 +110,7 @@ namespace alexmore.Fx.Tests.Domain
         public async Task UpdateSchdule(int id, string title)
         {
             await dataSource.ExecuteAsync(new UpdateSchedule() { Id = id, Title = title });
+            await dataSource.SaveChangesAsync();
 
             var completedS = await dataSource.Select<Schedule>().WithId(id).FirstOrDefaultAsync();
 
@@ -121,6 +124,7 @@ namespace alexmore.Fx.Tests.Domain
             // но для увеличения производительности в небольших системах очень удобно возвращать исправленные или
             // сгенерированные данные
             var added = await dataSource.ExecuteAsync<AddSchedule, Schedule>(new AddSchedule { Title = "New Schedule", Date = DateTime.Now, UserId = 1 });
+            await dataSource.SaveChangesAsync();
 
             var s = await dataSource.Select<Schedule>().WithId(added.Id).FirstOrDefaultAsync();
 

@@ -17,7 +17,7 @@ namespace alexmore.Fx.Tests.Domain.Commands
         {
         }
 
-        protected override async Task<Schedule> HandleAsync(AddSchedule cmd)
+        protected override Task<Schedule> HandleAsync(AddSchedule cmd)
         {
             var s = new Schedule()
             {
@@ -27,9 +27,8 @@ namespace alexmore.Fx.Tests.Domain.Commands
             };
 
             var r = DataSource.Entities.Add(s);
-            await DataSource.SaveChangesAsync();
 
-            return r;
+            return Task.FromResult(r);
         }
 
         public async Task<IEnumerable<ValidationMessage>> ValidateAsync(AddSchedule data)

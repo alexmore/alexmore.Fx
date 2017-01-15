@@ -32,8 +32,6 @@ namespace alexmore.Fx.Tests.Domain.Commands
 
             // TODO replace with automapper
             s.Title = cmd.Title;
-
-            await DataSource.SaveChangesAsync();
         }
     }
 }

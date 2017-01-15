@@ -23,7 +23,6 @@ namespace alexmore.Fx.Tests.Domain.Commands
         {
             var s = await DataSource.Entities.Get<Schedule>(x => x.Id == cmd.Id).SingleAsync();
             s.Date = cmd.NewDate;
-            await DataSource.SaveChangesAsync();
         }
     }
 }

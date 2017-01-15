@@ -22,17 +22,20 @@ THE SOFTWARE.
 
 using alexmore.Fx.Data;
 using alexmore.Fx.Domain.Commands;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace alexmore.Fx.Domain
 {
-    public interface IDataSource : IDisposable
+    public interface IDataSource : ICommandQueryFactory, IDisposable
     {
-        QueryProcessor<T> Select<T>();
-        Task ExecuteAsync<TCommand>(TCommand command) where TCommand : ICommand;
-        Task<TResult> ExecuteAsync<TCommand, TResult>(TCommand command) where TCommand : ICommand;
-        Task<IEnumerable<ValidationMessage>> ValidateAsync<T>(T data);
+
+
+        IDbContextTransaction BeginTransaction();
+
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
     }
 }

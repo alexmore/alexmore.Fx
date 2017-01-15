@@ -20,18 +20,10 @@ THE SOFTWARE.
 ******************************************************************************/
 #endregion
 
-using Microsoft.EntityFrameworkCore.Storage;
-using System.Threading;
-using System.Threading.Tasks;
-
 namespace alexmore.Fx.Domain.Commands
 {
-    public interface ICommandHandlerDataSource : IDataSource, ISqlDataSource
+    public interface ICommandHandlerDataSource : ICommandQueryFactory, ISqlDataSource
     {
         IEntitiesDataSource Entities { get; }
-
-        IDbContextTransaction BeginTransaction();
-
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
     }
 }
